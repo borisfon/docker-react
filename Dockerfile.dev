@@ -3,10 +3,14 @@ FROM node:lts-alpine
 
 WORKDIR '/app/'
 
+# we need to keep COPY statement below,
+# even if we are mounting a volume covering the file.
 COPY package.json .
 
 RUN npm install
 
-COPY . .
+# We can comment out the COPY statememt below
+# now that we have docker volume referencing .:/app
+# COPY . .
 
 CMD ["npm", "run", "start"]
