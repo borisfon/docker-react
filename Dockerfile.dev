@@ -13,6 +13,6 @@ RUN npm install
 # now that we have docker volume referencing .:/app
 # Let's keep the line however, 
 # we need it if we are not using docker compose.
-# COPY . .
+COPY . .
 
 CMD ["npm", "run", "start"]
