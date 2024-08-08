@@ -15,7 +15,7 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - name: Build the Docker image
-    - run: docker build . --file Dockerfile.dev --tag borisfon/docker-react:$(date +%s)
+    run: docker build . --file Dockerfile.dev --tag borisfon/docker-react:$(date +%s)
 
   test:
 
@@ -24,4 +24,4 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - name: Unit test the Docker image
-    - run: docker run -e CI=true borisfon/docker-react:$(date +%s) -- --coverage
+    run: docker run -e CI=true borisfon/docker-react:$(date +%s) -- --coverage
