@@ -1,7 +1,7 @@
 ###############
 # BUILD PHASE
 ###############
-FROM node:lts-alpine AS builder
+FROM node:1.27.0-alpine AS builder
 
 WORKDIR '/app/'
 
