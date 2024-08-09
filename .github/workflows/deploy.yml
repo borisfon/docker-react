@@ -1,14 +1,15 @@
-name: Docker Image CI
+name: React Demo Docker Image CI
+run-name: React Demo Docker Image CI to ${{ inputs.deploy_target }} by @${{ github.actor }}
 
 on:
   push:
     branches: [ "master" ]
-  pull_request:
-    branches: [ "master" ]
+  #  pull_request:
+    #  branches: [ "master" ]
 
 jobs:
 
-  deploy:
+  unit-tests:
     runs-on: ubuntu-latest
     steps:
 
@@ -19,6 +20,14 @@ jobs:
       run: docker build --file Dockerfile.dev --tag borisfon/docker-react .
       run: docker run -e CI=true borisfon/docker-react npm run test
 
+  deploy:
+    needs: unit-tests
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: Checkout source code
+      uses: actions/checkout@v4
+
     - name: Generate deployment package
       run: zip -r deploy.zip . -x '*.git*'
 
@@ -28,7 +37,7 @@ jobs:
         aws_access_key: ${{ secrets.AWS_ACCESS_KEY }}
         aws_secret_key: ${{ secrets.AWS_SECRET_KEY }}
         application_name: frontend
-        environment_name: Frontend-environment
+        environment_name: Frontend-env
         region: us-east-2
         version_label: ${{ github.sha }}
         deployment_package: deploy.zip
