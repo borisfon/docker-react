@@ -22,7 +22,7 @@ jobs:
     - name: Unit testing using fresh Docker image on GitHub
       run: docker run -e CI=true borisfon/docker-react npm run test
 
-  package:
+  deploy:
     needs: unit-tests
     runs-on: ubuntu-latest
     steps:
@@ -32,11 +32,6 @@ jobs:
 
     - name: Generate deployment package
       run: zip -r deploy.zip . -x '*.git*'
-
-  deploy:
-    needs: package
-    runs-on: ubuntu-latest
-    steps:
 
     - name: Deploy to AWS Elastic Beanstalk instance
       uses: einaregilsson/beanstalk-deploy@v22
