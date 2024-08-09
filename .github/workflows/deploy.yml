@@ -13,18 +13,18 @@ jobs:
     steps:
 
     - name: Checkout source code
-    - uses: actions/checkout@v4
+      uses: actions/checkout@v4
 
     - name: Unit testing on GitHub
-    - run: docker build --file Dockerfile.dev --tag borisfon/docker-react .
-    - run: docker run -e CI=true borisfon/docker-react npm run test
+      run: docker build --file Dockerfile.dev --tag borisfon/docker-react .
+      run: docker run -e CI=true borisfon/docker-react npm run test
 
     - name: Generate deployment package
-    - run: zip -r deploy.zip . -x '*.git*'
+      run: zip -r deploy.zip . -x '*.git*'
 
     - name: Deploy to AWS Elastic Beanstalk instance
-    - uses: einaregilsson/beanstalk-deploy@v22
-    - with:
+      uses: einaregilsson/beanstalk-deploy@v22
+      with:
         aws_access_key: ${{ secrets.AWS_ACCESS_KEY }}
         aws_secret_key: ${{ secrets.AWS_SECRET_KEY }}
         application_name: frontend
