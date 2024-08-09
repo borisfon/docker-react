@@ -16,8 +16,10 @@ jobs:
     - name: Checkout source code
       uses: actions/checkout@v4
 
-    - name: Unit testing on GitHub
+    - name: Build Docker image
       run: docker build --file Dockerfile.dev --tag borisfon/docker-react .
+
+    - name: Unit testing using fresh Docker image on GitHub
       run: docker run -e CI=true borisfon/docker-react npm run test
 
   deploy:
