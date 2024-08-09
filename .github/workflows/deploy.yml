@@ -1,0 +1,34 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: Checkout source code
+    - uses: actions/checkout@v4
+
+    - name: Unit testing on GitHub
+    - run: docker build --file Dockerfile.dev --tag borisfon/docker-react .
+    - run: docker run -e CI=true borisfon/docker-react npm run test
+
+    - name: Generate deployment package
+    - run: zip -r deploy.zip . -x '*.git*'
+
+    - name: Deploy to AWS Elastic Beanstalk instance
+    - uses: einaregilsson/beanstalk-deploy@v22
+    - with:
+        aws_access_key: ${{ secrets.AWS_ACCESS_KEY }}
+        aws_secret_key: ${{ secrets.AWS_SECRET_KEY }}
+        application_name: frontend
+        environment_name: Frontend-environment
+        region: us-east-2
+        version_label: ${{ github.sha }}
+        deployment_package: deploy.zip

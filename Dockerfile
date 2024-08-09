@@ -24,7 +24,7 @@ CMD ["npm", "run", "build"]
 # RUN PHASE
 ##############
 FROM nginx AS run
-
+EXPOSE 80
 COPY --from=builder /app/build /usr/share/nginx/html
 
 # No need for more commands. Nginx starts automatically.
