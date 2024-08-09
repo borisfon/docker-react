@@ -8,3 +8,13 @@ before_install:
 
 script:
   - docker run -e CI=true borisfon/docker-react npm run test -- --coverage
+
+deploy:
+  provider: elasticbeanstalk
+  region: "us-east-2"
+  app: "frontend"
+  env: "Frontend-env"
+  bucket_name: "elasticbeanstalk-us-east-2-026090529699"
+  bucket_path: "frontend"
+  on:
+    branch: master
