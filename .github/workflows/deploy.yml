@@ -31,7 +31,7 @@ jobs:
       uses: actions/checkout@v4
 
     - name: Build Production Docker image to Google account container registry
-      run: docker build --file Dockerfile --tag gcr.io/dockerdeploymentdemo/small-20240810-035310:0.1.0
+      run: docker build . --file Dockerfile --tag gcr.io/dockerdeploymentdemo/small-20240810-035310:0.1.0
 
     - name: Push image to Google repo
       run: docker image push grc.io/dockerdeploymentdemo/small-20240810-035310:0.1.0
