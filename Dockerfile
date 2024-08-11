@@ -3,7 +3,7 @@
 ###############
 FROM node:lts-alpine AS builder
 
-WORKDIR '/app/'
+WORKDIR '/app'
 
 # we need to keep COPY statement below,
 # even if we are mounting a volume covering the file.
@@ -17,7 +17,7 @@ RUN npm install
 # we need it if we are not using docker compose.
 COPY . .
 
-CMD ["npm", "run", "build"]
+RUN npm run build
 
 
 ##############
