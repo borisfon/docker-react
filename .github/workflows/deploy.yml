@@ -16,7 +16,7 @@ jobs:
     - name: Checkout source code
       uses: actions/checkout@v4
 
-    - name: Build Docker image
+    - name: Build Docker image to personal Docker images registry
       run: docker build --file Dockerfile.dev --tag borisfon/docker-react .
 
     - name: Unit testing using fresh Docker image on GitHub
@@ -30,16 +30,22 @@ jobs:
     - name: Checkout source code
       uses: actions/checkout@v4
 
-    - name: Generate deployment package
-      run: zip -r deploy.zip . -x '*.git*'
+    - name: Build Production Docker image to Google account container registry
+      run: docker build --file Dockerfile --tag gcr.io/dockerdeploymentdemo/small-20240810-035310:0.1.0
 
-    - name: Deploy to AWS Elastic Beanstalk instance
-      uses: einaregilsson/beanstalk-deploy@v22
-      with:
-        aws_access_key: ${{ secrets.AWS_ACCESS_KEY }}
-        aws_secret_key: ${{ secrets.AWS_SECRET_KEY }}
-        application_name: frontend
-        environment_name: Frontend-env
-        region: us-east-2
-        version_label: Sample
-        deployment_package: deploy.zip
+    - name: Push image to Google repo
+      run: docker image push grc.io/dockerdeploymentdemo/small-20240810-035310:0.1.0
+
+      #    - name: Package code for deployment
+      #run: zip -r deploy.zip . -x '*.git*'
+
+      #    - name: Deploy to AWS Elastic Beanstalk instance
+        #uses: einaregilsson/beanstalk-deploy@v22
+        #with:
+        #aws_access_key: ${{ secrets.AWS_ACCESS_KEY }}
+        #aws_secret_key: ${{ secrets.AWS_SECRET_KEY }}
+        #application_name: frontend
+        #environment_name: Frontend-env
+        #region: us-east-2
+        #version_label: Sample
+        #deployment_package: deploy.zip
